@@ -7,23 +7,6 @@
 <style type="text/css">
 	body { font-family:Verdana, Geneva, sans-serif; font-size: 10px; }
 </style>
-<script>
-<!-- 
-
-function getpointsplus(){
-	$.post("functions.php", { func:"getPointsPlus",fat:document.getPoints.fat.value,protein:document.getPoints.protein.value,carbs:document.getPoints.carbs.value,fiber:document.getPoints.fiber.value,servings1:document.getPoints.servings1.value,servings2:document.getPoints.servings2.value },
-	function(data){
-		$('#result').html(data);
-	});
-	document.getPoints.fat.value='';
-	document.getPoints.protein.value='';
-	document.getPoints.carbs.value='';
-	document.getPoints.fiber.value='';
-}
-
--->
-</script>
-<script language="JavaScript" src="jquery-1.4.2.js"></script>
 </head>
 <body>
 <div align="center">
@@ -31,28 +14,28 @@ function getpointsplus(){
   <img src="wwatchers.gif" width="276" height="175" />
   <div id="result"></div>
   
-  <form name="getPoints" id="getPoints" method="post">
+  <form name="getPointsInFood" id="getPointsInFood" method="post">
   <table width="220" border="0">
     <tr>
       <td><div align="right"><strong>Fat:</strong></div></td>
-      <td><input name="fat" type="number" size="4"></td>
+      <td><input id="fat" type="number" size="4"></td>
     </tr>
     <tr>
       <td><div align="right"><strong>Carbs:</strong></div></td>
-      <td><input name="carbs" type="number" size="4"></td>
+      <td><input id="carbs" type="number" size="4"></td>
     </tr>
     <tr>
       <td><div align="right"><strong>Fiber:</strong></div></td>
-      <td><input name="fiber" type="number" size="4"></td>
+      <td><input id="fiber" type="number" size="4"></td>
     </tr>
      <tr>
       <td><div align="right"><strong>Protein:</strong></div></td>
-      <td><input name="protein" type="number" size="4"></td>
+      <td><input id="protein" type="number" size="4"></td>
     </tr>
     <tr>
       <td><div align="right"><strong>Servings:</strong></div></td>
       <td>
-        <select name="servings1">
+        <select id="fullServings">
           <option value="0">0</option>
           <option value="1" selected="selected">1</option>
           <option value="2">2</option>
@@ -65,7 +48,7 @@ function getpointsplus(){
           <option value="9">9</option>
           <option value="10">10</option>
         </select>
-        <select name="servings2">
+        <select id="partialServings">
           <option value="0" selected="selected">0</option>
           <option value="0.125">1/8</option>
           <option value="0.25">1/4</option>
@@ -75,7 +58,7 @@ function getpointsplus(){
       </td>
     </tr>
   </table>
-  <input name="submit" type="button" value="Submit" onclick="getpointsplus()">
+  <input name="submit" type="submit" value="Submit">
   </form>
 	
     <br />
@@ -83,5 +66,7 @@ function getpointsplus(){
 <br />
 <a href="points.html">Get Daily Points Allowance</a>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="points.js"></script>
 </body>
 </html>

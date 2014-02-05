@@ -4,57 +4,6 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 <title>Points Plus Allowance</title>
-<script>
-function calcScore(sex,age,weight,height){
-    weight = parseInt(weight,10)*.45359237;
-    height = parseInt(height,10)*.0254; 
-	
-    if(sex == "male"){
-    	points=864-(9.72*age);
-        points+=1.12*((14.2*weight)+(503*height));
-        points=((points*.9)+200)-1000;
-        if(points<1000){ points=1000; }
-        points =Math.round(points/35)-11;
-        if(points<29){ points=29; }
-        if(points>71){ points=71; }
-    }
-	
-	if(sex == "female"){
-		points=387-(7.31*age);
-		points+=1.14*((10.9*weight)+(660.7*height));
-		points=((points*.9)+200)-1000;
-		if(points<1000)points=1000;
-		points=Math.round(points/35)-11;
-		if(points<26)points=26;
-		if(points>71)points=71;	
-	}
-	
-	return points;
-	
-}
-
-function getGender() {
-    var sizes = document.ww.sex;
-
-        for (i=0; i < sizes.length; i++) {
-            if (sizes[i].checked==true) {
-            return sizes[i].value;
-        }
-    }
-}
-
-function submitForm() {
-
-    var sex = getGender();
-    var age = document.ww.age.value;
-	var weight = document.ww.weight.value;
-	var height = document.ww.height.value;
-	
-	var points = calcScore(sex,age,weight,height);
-	
-	document.getElementById("result").innerHTML="<hr><strong>"+points+" Daily Allowance (+ 49 Weekly Allowance)</strong><br><hr>";
-}
-</script>	
 <style type="text/css">
 	body { font-family:Verdana, Geneva, sans-serif; font-size: 10px; }
 </style>
@@ -66,7 +15,7 @@ function submitForm() {
   <img src="wwatchers.gif" width="276" height="175" />
   <div id="result"></div>
       
-    <form action="javascript:submitForm()" name="ww">
+    <form name="ww" id="getDailyPoints">
     <table width="220" border="0">
     	<tr>
         	<td><label for="gender">Gender: </label></td>
@@ -98,6 +47,7 @@ function submitForm() {
     <a href="index.php">Get food Points Value</a>
 
 </div>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="points.js"></script>
 </body>
 </html>
