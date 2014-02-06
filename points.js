@@ -1,49 +1,60 @@
+// US Points
 function getPointsPlusInFood(servings, fat, protein, carbs, fiber) {
     protein = servings * protein;
     carbs   = servings * carbs;
     fat     = servings * fat;
-    fiber   = servings * (fiber > 4 ? 4 : fiber);
+    fiber   = servings * fiber;
 
-    var points = (protein / 10.9) + (carbs / 9.2) + (fat / 3.9) + (fiber / 35);
-    return Math.round(points);
+    var points = (protein / 10.9375) + (carbs / 9.2105) + (fat / 3.8889) - (fiber / 12.5);
+    return round(points);
+}
+
+// UK Points
+function getProPointsInFood(servings, fat, protein, carbs, fiber) {
+    protein = servings * protein;
+    carbs   = servings * carbs;
+    fat     = servings * fat;
+    fiber   = servings * fiber;
+
+    // UK ProPoints handle fiber differently because their nutrition labels don't factor fiber into carbs
+    var points = (protein / 10.9375) + (carbs / 9.2105) + (fat / 3.8889) + (fiber / 35);
+    return round(points);
 }
 
 function getDailyPoints(sex, age, weight, height){
-    var points;
-    weight = parseInt(weight,10)*0.45359237;
-    height = parseInt(height,10)*0.0254;
+    var points,
+        minPoints = 26,
+        maxPoints = 71,
+        energyExpenditure,
+        adjustedExpenditure;
 
-    if (sex == "male") {
-        points=864-(9.72*age);
-        points+=1.12*((14.2*weight)+(503*height));
-        points=((points*0.9)+200)-1000;
-        if(points<1000){ points=1000; }
-        points =Math.round(points/35)-11;
-        if(points<29){ points=29; }
-        if(points>71){ points=71; }
+    // convert measurements to metric (kilograms and meters)
+    weight = weight * 0.45359237;
+    height = height * 0.0254;
+
+    // Calculate the amount of kCal the person is expected to expend
+    if (sex == 'male') {
+        energyExpenditure = 864 - (9.72 * age) + 1.12 * (14.2 * weight + 503 * height);
+        minPoints = 29; // Is this hard minimum legit?
+    } else if (sex == 'female') {
+        energyExpenditure = 387 - (7.31 * age) + 1.14 * (10.9 * weight + 660.7 * height);
     }
 
-    if (sex == "female") {
-        points=387-(7.31*age);
-        points+=1.14*((10.9*weight)+(660.7*height));
-        points=((points*0.9)+200)-1000;
-        if(points<1000)points=1000;
-        points=Math.round(points/35)-11;
-        if(points<26)points=26;
-        if(points>71)points=71;
-    }
+    // Adjust for foods that have a value of 0 despite having coloric content
+    adjustedExpenditure = 0.9 * energyExpenditure + 200;
+
+    // Finally, figure out the daily target
+    points = Math.max(adjustedExpenditure - 1000, 1000) / 35;
+    points = Math.round(points) - 11;
+
+    if (points < minPoints)
+        return minPoints;
+
+    if (points > maxPoints)
+        return maxPoints;
+
     return points;
 }
-
-function getGender() {
-    var sizes = document.ww.sex;
-        for (var i=0; i < sizes.length; i++) {
-            if (sizes[i].checked === true) {
-            return sizes[i].value;
-        }
-    }
-}
-
 
 $('form#getPointsInFood').submit(function(event) {
     event.preventDefault();
@@ -61,12 +72,11 @@ $('form#getPointsInFood').submit(function(event) {
 $('form#getDailyPoints').submit(function(event) {
     event.preventDefault();
 
-    var sex = getGender();
-    var age = document.ww.age.value;
-    var weight = document.ww.weight.value;
-    var height = document.ww.height.value;
+    var sex    = $('input[name=sex]:checked', '#getDailyPoints').val(),
+        age    = parseInt($('input#age').val(),10),
+        weight = parseInt($('input#weight').val(),10),
+        height = parseInt($('input#height').val(),10),
+        points = getDailyPoints(sex, age, weight, height);
     
-    var points = getDailyPoints(sex,age,weight,height);
-    
-    document.getElementById("result").innerHTML="<hr><strong>"+points+" Daily Allowance (+ 49 Weekly Allowance)</strong><br><hr>";
+    $('#result').html('<hr><strong>'+points+' Daily Allowance (+ 49 Weekly Allowance)</strong><br><hr>');
 });
