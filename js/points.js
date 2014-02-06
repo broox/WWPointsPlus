@@ -61,6 +61,7 @@ function showPointsForm() {
     $('#foodPoints').removeClass('hidden').show();
     $('.nav .food').addClass('active');
     $('.nav .allowance').removeClass('active');
+    $('.navbar-collapse.in').collapse('hide');
 }
 
 function showDailyAllowanceForm() {
@@ -68,6 +69,7 @@ function showDailyAllowanceForm() {
     $('#dailyAllowance').removeClass('hidden').show();
     $('.nav .food').removeClass('active');
     $('.nav .allowance').addClass('active');
+    $('.navbar-collapse.in').collapse('hide');
 }
 
 $(document).ready(function() {
