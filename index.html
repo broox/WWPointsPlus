@@ -1,72 +1,148 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-<title>Weight Watchers Calculator</title>
-<style type="text/css">
-	body { font-family:Verdana, Geneva, sans-serif; font-size: 10px; }
-</style>
-</head>
-<body>
-<div align="center">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Points Calculator</title>
 
-  <img src="wwatchers.gif" width="276" height="175" />
-  <div id="result"></div>
-  
-  <form name="getPointsInFood" id="getPointsInFood" method="post">
-  <table width="220" border="0">
-    <tr>
-      <td><div align="right"><strong>Fat:</strong></div></td>
-      <td><input id="fat" type="number" size="4"></td>
-    </tr>
-    <tr>
-      <td><div align="right"><strong>Carbs:</strong></div></td>
-      <td><input id="carbs" type="number" size="4"></td>
-    </tr>
-    <tr>
-      <td><div align="right"><strong>Fiber:</strong></div></td>
-      <td><input id="fiber" type="number" size="4"></td>
-    </tr>
-     <tr>
-      <td><div align="right"><strong>Protein:</strong></div></td>
-      <td><input id="protein" type="number" size="4"></td>
-    </tr>
-    <tr>
-      <td><div align="right"><strong>Servings:</strong></div></td>
-      <td>
-        <select id="fullServings">
-          <option value="0">0</option>
-          <option value="1" selected="selected">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-        <select id="partialServings">
-          <option value="0" selected="selected">0</option>
-          <option value="0.125">1/8</option>
-          <option value="0.25">1/4</option>
-          <option value="0.50">1/2</option>
-          <option value="0.75">3/4</option>
-        </select>
-      </td>
-    </tr>
-  </table>
-  <input name="submit" type="submit" value="Submit">
-  </form>
-	
-    <br />
-<br />
-<br />
-<a href="points.html">Get Daily Points Allowance</a>
-</div>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script src="points.js"></script>
-</body>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      body { padding-top:70px; }
+      #pointsInFood .points { white-space:nowrap; }
+      #pointsAllowed .weekly { white-space:nowrap; }
+    </style>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Point Calculator</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="food active"><a href="#food">Food Points</a></li>
+            <li class="allowance"><a href="#allowance">Daily Allowance</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="row hidden" id="foodPoints">
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6">
+          <h1>Food Points</h1>
+          <div class="hidden" id="pointsInFood">
+            <small class="measures"></small>
+            <strong class="points"></strong>
+          </div>
+          <form role="form" id="getPointsInFood">
+            <div class="form-group">
+              <label for="fat" class="sr-only">Fat</label>
+              <input type="number" class="form-control" id="fat" placeholder="Fat">
+            </div>
+            <div class="form-group">
+              <label for="carbs" class="sr-only">Carbs</label>
+              <input type="number" class="form-control" id="carbs" placeholder="Carbs">
+            </div>
+            <div class="form-group">
+              <label for="fiber" class="sr-only">Fiber</label>
+              <input type="number" class="form-control" id="fiber" placeholder="Fiber">
+            </div>
+            <div class="form-group">
+              <label for="protein" class="sr-only">Protein</label>
+              <input type="number" class="form-control" id="protein" placeholder="Protein">
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="fullServings">Servings</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-6">
+                  <select class="form-control" id="fullServings">
+                    <option value="0">0</option>
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                  <select class="form-control" id="partialServings">
+                    <option value="0" selected="selected">0</option>
+                    <option value="0.125">1/8</option>
+                    <option value="0.25">1/4</option>
+                    <option value="0.50">1/2</option>
+                    <option value="0.75">3/4</option>
+                  </select>
+                  <!-- <p class="help-block">Example block-level help text here.</p> -->
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-default">Get points!</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row hidden" id="dailyAllowance">
+        <div class="col-sm-12 col-sm-offset-3 col-sm-6">
+          <h1>Daily Allowance</h1>
+          <div class="hidden" id="pointsAllowed">
+            <strong class="daily"></strong>
+            <small class="weekly"></small>
+          </div>
+          <form role="form" id="getDailyPoints">
+            <div class="form-group">
+              <label for="age" class="sr-only">Age</label>
+              <input type="number" class="form-control" id="age" placeholder="Age">
+            </div>
+            <div class="form-group">
+              <label for="weight" class="sr-only">Weight (lbs)</label>
+              <input type="number" class="form-control" id="weight" placeholder="Weight (lbs)">
+            </div>
+            <div class="form-group">
+              <label for="height" class="sr-only">Height (inches)</label>
+              <input type="number" class="form-control" id="height" placeholder="Height (inches)">
+            </div>
+
+            <div class="form-group">
+              <label for="sex" class="sr-only">Gender</label>
+              <select class="form-control" id="sex" name="sex">
+                <option value="male">Male</option>
+                <option value="female" selected="selected">Female</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-default">Get daily allowance!</button>
+          </form>
+        </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/points.js"></script>
+  </body>
 </html>
