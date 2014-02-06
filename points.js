@@ -6,7 +6,7 @@ function getPointsPlusInFood(servings, fat, protein, carbs, fiber) {
     fiber   = servings * fiber;
 
     var points = (protein / 10.9375) + (carbs / 9.2105) + (fat / 3.8889) - (fiber / 12.5);
-    return round(points);
+    return Math.round(points);
 }
 
 // UK Points
@@ -18,7 +18,7 @@ function getProPointsInFood(servings, fat, protein, carbs, fiber) {
 
     // UK ProPoints handle fiber differently because their nutrition labels don't factor fiber into carbs
     var points = (protein / 10.9375) + (carbs / 9.2105) + (fat / 3.8889) + (fiber / 35);
-    return round(points);
+    return Math.round(points);
 }
 
 function getDailyPoints(sex, age, weight, height){
